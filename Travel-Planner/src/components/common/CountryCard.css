@@ -1,0 +1,37 @@
+/* Add to global.css or src/components/CountryCard.css */
+.country-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  width: 220px;
+  background: #fff;
+  color: #111;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px;
+  padding: 16px;
+}
+.country-card__image img {
+  width: 64px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.country-card__placeholder {
+  font-size: 2.5rem;
+}
+.country-card__info {
+  text-align: center;
+}
+.country-card__link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: bold;
+}
+.country-card__link:hover {
+  text-decoration: underline;
+}
