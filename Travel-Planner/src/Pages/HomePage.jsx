@@ -23,12 +23,13 @@ export default function HomePage() {
           console.log("Using cached countries data");
           setCountries(parsedCountries);
           setisLoading(false);
+
           return;
         }
 
         console.log("Fetching countries from API");
         const response = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags"
+          "https://restcountries.com/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags,latlng"
         );
         if (!response.ok) {
           throw new Error("error fetching the data");
@@ -126,8 +127,8 @@ export default function HomePage() {
       <div className="country-grid">
         {!isLoading && (
           <>
-            {search === "" &&
-              continent === "All" &&
+            {search === "" && continent === "All" ? (
+              // Featured countries
               featuredCountries.map((country) => (
                 <CountryCard
                   key={country.name.official}
@@ -135,10 +136,9 @@ export default function HomePage() {
                   flag={country.flags?.png}
                   capital={country.capital?.[0]}
                 />
-              ))}
-
-            {search === "" &&
-              continent !== "All" &&
+              ))
+            ) : search === "" && continent !== "All" ? (
+              // Continent countries
               continentCountries.map((country) => (
                 <CountryCard
                   key={country.name.official}
@@ -146,9 +146,11 @@ export default function HomePage() {
                   flag={country.flags?.png}
                   capital={country.capital?.[0]}
                 />
-              ))}
-
-            {search !== "" &&
+              ))
+            ) : search !== "" && filteredCountries.length === 0 ? (
+              <div>Country not found.</div>
+            ) : (
+              // Filtered countries
               filteredCountries.map((country) => (
                 <CountryCard
                   key={country.name.official}
@@ -156,7 +158,8 @@ export default function HomePage() {
                   flag={country.flags?.png}
                   capital={country.capital?.[0]}
                 />
-              ))}
+              ))
+            )}
           </>
         )}
       </div>
