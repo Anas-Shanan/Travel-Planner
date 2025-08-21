@@ -1,13 +1,25 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-export default function CountryDetails({ country }) {
-  console.log(country);
-  if (!country) return <div>No country data available.</div>;
+export default function CountryDetails({ country, favorites, dispatch }) {
+  const isFavorite =
+    Array.isArray(favorites) &&
+    favorites.some((fav) => fav.name?.common === country.name?.common);
+
+  const handleFavoriteToggle = () => {
+    if (isFavorite) {
+      dispatch({ type: "REMOVE_COUNTRY", payload: { name: country.name } });
+    } else {
+      dispatch({ type: "ADD_COUNTRY", payload: country });
+    }
+  };
+  console.log(isFavorite);
   const latlng = country.latlng;
+
+  if (!country) return <div>No country data available.</div>;
   return (
     <div>
       <h2>{country.name?.common || "No name available"}</h2>
@@ -40,7 +52,12 @@ export default function CountryDetails({ country }) {
           : country.currencies}
       </p>
       <div>
-        <button onClick={""}>Add to ferorites</button>
+        <button
+          onClick={handleFavoriteToggle}
+          className={isFavorite ? "remove-btn" : "add-btn"}
+        >
+          {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+        </button>
       </div>
       <div>
         {latlng && latlng.length === 2 && (

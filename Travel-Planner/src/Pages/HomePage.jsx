@@ -3,6 +3,7 @@ import ContinentFilter from "../components/Home/ContinentFilter";
 import SearchBar from "../components/Home/SearchBar";
 import CountryCard from "../components/common/CountryCard";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const [countries, setCountries] = useState([]);
@@ -101,7 +102,12 @@ export default function HomePage() {
   };
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.5 }}
+    >
       <HeroBanner />
       <div style={{ padding: "20px" }}>
         <h1>Country Explorer</h1>
@@ -163,6 +169,6 @@ export default function HomePage() {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

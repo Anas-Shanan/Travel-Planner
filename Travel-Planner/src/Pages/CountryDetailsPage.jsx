@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CountryDetails from "../components/CountryDetails";
 import { useParams } from "react-router-dom";
+import { useFavorites } from "../Context/FavoritesContext";
 
 export default function CountryDetailsPage() {
   const [country, setCountry] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { name } = useParams();
+  const { favorites, dispatch } = useFavorites();
 
   useEffect(() => {
     async function fetchCountry() {
@@ -34,8 +36,14 @@ export default function CountryDetailsPage() {
   return (
     <div>
       {isLoading && <div>Loading...</div>}
-      {error && <div>{error.message}</div>}
-      {country && <CountryDetails country={country} />}
+      {error && <div>{error}</div>}
+      {country && (
+        <CountryDetails
+          country={country}
+          favorites={favorites}
+          dispatch={dispatch}
+        />
+      )}
     </div>
   );
 }
