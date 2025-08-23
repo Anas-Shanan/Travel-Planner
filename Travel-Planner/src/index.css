@@ -176,3 +176,34 @@ body {
     padding: 0.5rem;
   }
 }
+
+.chat-container {
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+.chat-window {
+  height: 200px;
+  overflow-y: auto;
+}
+
+.user-message {
+  background: #4caf50;
+  color: white;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 5px;
+  text-align: right;
+}
+
+.ai-message {
+  background: #f1f1f1;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+}

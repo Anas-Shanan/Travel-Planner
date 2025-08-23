@@ -10,6 +10,7 @@ export default function CountryDetails({
   dispatch,
   travelSuggestions,
   onFetchTravelSuggestions,
+  isAiLoading,
 }) {
   const isFavorite =
     Array.isArray(favorites) &&
@@ -22,40 +23,52 @@ export default function CountryDetails({
       dispatch({ type: "ADD_COUNTRY", payload: country });
     }
   };
-  console.log(isFavorite);
+
   const latlng = country.latlng;
 
   if (!country) return <div>No country data available.</div>;
   return (
     <div>
       <h2>{country.name?.common || "No name available"}</h2>
-      {country.flags && (
+      {country.flags?.png && (
         <img
           src={country.flags.png}
           alt={`${country.name?.common || "flag"}`}
           style={{ width: "100px" }}
         />
       )}
-      <p>Official Name: {country.name?.official}</p>
-      <p>Capital: {country.capital}</p>
-      <p>Region: {country.region}</p>
-      <p>Subregion: {country.subregion}</p>
-      <p>Population: {country.population}</p>
+      <p>
+        Official Name: {country.name?.official || "No official name available"}
+      </p>
+      <p>Capital: {country.capital?.[0] || "No capital data available"}</p>
+      <p>Region: {country.region || "No region data available"}</p>
+      <p>Subregion: {country.subregion || "No subregion data available"}</p>
+      <p>
+        Population:{" "}
+        {country.population
+          ? country.population.toLocaleString()
+          : "No population data available"}
+      </p>
       <p>
         Languages:{" "}
-        {Array.isArray(country.languages)
-          ? country.languages.join(", ")
-          : typeof country.languages === "object"
-          ? Object.values(country.languages).join(", ")
-          : country.languages}
+        {country.languages
+          ? Array.isArray(country.languages)
+            ? country.languages.join(", ")
+            : typeof country.languages === "object"
+            ? Object.values(country.languages).join(", ")
+            : String(country.languages)
+          : "No language data available"}
       </p>
       <p>
         Currencies:{" "}
-        {country.currencies && typeof country.currencies === "object"
-          ? Object.values(country.currencies)
-              .map((cur) => cur.name)
-              .join(", ")
-          : country.currencies}
+        {country.currencies
+          ? typeof country.currencies === "object"
+            ? Object.values(country.currencies)
+                .map((cur) => cur?.name || cur?.code || "Unknown")
+                .filter(Boolean)
+                .join(", ")
+            : String(country.currencies)
+          : "No currency data available"}
       </p>
       <div>
         <button
@@ -66,8 +79,12 @@ export default function CountryDetails({
         </button>
       </div>
       ////////////////////////
-      <button onClick={onFetchTravelSuggestions} className="travel-btn">
-        Get Travel Plan for 3 days
+      <button
+        onClick={onFetchTravelSuggestions}
+        className="travel-btn"
+        disabled={isAiLoading}
+      >
+        {isAiLoading ? "Loading..." : "Get Travel Plan for 3 days"}
       </button>
       {travelSuggestions && (
         <div className="travel-suggestions">
@@ -86,7 +103,7 @@ export default function CountryDetails({
             }}
             style={{ width: "100%", height: 400 }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
-            mapboxAccessToken="pk.eyJ1IjoiYW5hc21hcDc3IiwiYSI6ImNtZWp6ZTZoZzAwcHMyaXMyaXNraHI1aTQifQ.Xlu3Yw1iJoWya1QPtaexHQ"
+            mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
           >
             <Marker longitude={latlng[1]} latitude={latlng[0]} />
           </Map>
