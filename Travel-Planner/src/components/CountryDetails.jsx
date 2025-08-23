@@ -4,7 +4,13 @@ import { NavLink } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-export default function CountryDetails({ country, favorites, dispatch }) {
+export default function CountryDetails({
+  country,
+  favorites,
+  dispatch,
+  travelSuggestions,
+  onFetchTravelSuggestions,
+}) {
   const isFavorite =
     Array.isArray(favorites) &&
     favorites.some((fav) => fav.name?.common === country.name?.common);
@@ -59,6 +65,17 @@ export default function CountryDetails({ country, favorites, dispatch }) {
           {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
         </button>
       </div>
+      ////////////////////////
+      <button onClick={onFetchTravelSuggestions} className="travel-btn">
+        Get Travel Plan for 3 days
+      </button>
+      {travelSuggestions && (
+        <div className="travel-suggestions">
+          <h3>Travel Plan for {country.name.common}</h3>
+          <p>{travelSuggestions}</p>
+        </div>
+      )}
+      ////////////////////////
       <div>
         {latlng && latlng.length === 2 && (
           <Map

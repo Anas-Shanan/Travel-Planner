@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import CountryDetails from "../components/CountryDetails";
 import { useParams } from "react-router-dom";
 import { useFavorites } from "../Context/FavoritesContext";
+///////////
+import { fetchChatResponse } from "../components/services/AiApi";
 
 export default function CountryDetailsPage() {
   const [country, setCountry] = useState(null);
@@ -9,6 +11,10 @@ export default function CountryDetailsPage() {
   const [error, setError] = useState(null);
   const { name } = useParams();
   const { favorites, dispatch } = useFavorites();
+
+  ////////
+
+  const [travelSuggestions, setTravelSuggestions] = useState(null);
 
   useEffect(() => {
     async function fetchCountry() {
@@ -32,6 +38,20 @@ export default function CountryDetailsPage() {
     }
     fetchCountry();
   }, [name]);
+  ///////////////////////
+
+  const handleFetchTravelSuggestions = async () => {
+    try {
+      setIsLoading(true);
+      const result = await fetchChatResponse(name);
+      setTravelSuggestions(result);
+      setIsLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
+  };
+  //////////////
 
   return (
     <div>
@@ -42,6 +62,9 @@ export default function CountryDetailsPage() {
           country={country}
           favorites={favorites}
           dispatch={dispatch}
+          /////////
+          travelSuggestions={travelSuggestions}
+          onFetchTravelSuggestions={handleFetchTravelSuggestions}
         />
       )}
     </div>

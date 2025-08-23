@@ -1,17 +1,13 @@
-:root {
+/* :root {
   font-family: Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.97);
   background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+} */
 
 a {
   font-weight: 500;
@@ -23,7 +19,6 @@ a {
 body {
   margin: 0;
   padding: 0;
-  /* overflow-x: hidden; */
 
   nav {
     display: flex;
@@ -58,12 +53,39 @@ button:focus-visible {
 .activeLink {
   color: red;
 }
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.home-page,
+.favorites-page,
+.country-details {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
 
 .country-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-  margin: 32px 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.country-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  background-color: white;
+  transition: transform 0.2s;
+}
+
+.country-card:hover {
+  transform: scale(1.05);
 }
 
 .country-details {
@@ -73,16 +95,25 @@ button:focus-visible {
   border: 1px solid #ccc;
   border-radius: 8px;
   text-align: center;
+  background-color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
 }
 
 .back-btn,
 .add-btn,
-.remove-btn {
+.remove-btn,
+.travel-btn {
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .back-btn {
@@ -90,12 +121,58 @@ button:focus-visible {
   color: white;
 }
 
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
 .add-btn {
   background-color: #28a745;
   color: white;
 }
 
+.add-btn:hover {
+  background-color: #218838;
+}
+
 .remove-btn {
   background-color: #dc3545;
   color: white;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.travel-btn {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.travel-btn:hover {
+  background-color: #138496;
+}
+
+.travel-suggestions {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #17a2b8;
+  border-radius: 8px;
+  background-color: #e6f7fa;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .home-page .filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .country-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .country-details {
+    margin: 1rem;
+    padding: 0.5rem;
+  }
 }
