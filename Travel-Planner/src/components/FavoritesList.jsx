@@ -11,10 +11,18 @@ export default function FavoritesList({ favorites, dispatch }) {
     );
   }
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+        marginBottom: "50px",
+      }}
+    >
       {favorites &&
         favorites.map((country, index) => (
-          <li key={index}>
+          <li key={index} className="fevList">
             {country.name.common}
             <button
               onClick={() =>

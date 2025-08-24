@@ -16,7 +16,7 @@ export const fetchChatResponse = async (countryName) => {
             content: `Travel question about ${countryName}. Format as: Itinerary: [3-day plan]. Suggestions: [general tips].`,
           },
         ],
-        max_tokens: 250,
+        max_tokens: 350,
       }),
     });
     if (!response.ok) throw new Error("Failed to fetch AI response");
@@ -36,12 +36,12 @@ export const fetchChatBotResponse = async (
   try {
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
-    // Create system message with country context
+    // system message with country context
     const systemMessage = countryName
       ? `You are a helpful travel assistant. The user is currently viewing information about ${countryName}. Provide relevant travel advice, tips, and information about ${countryName}. Keep responses concise and helpful.`
       : `You are a helpful travel assistant. Provide relevant travel advice and information. Keep responses concise and helpful.`;
 
-    // Build messages array with conversation history
+    // messages array with conversation history
     const messages = [
       { role: "system", content: systemMessage },
       ...conversationHistory.map((msg) => ({
@@ -60,7 +60,7 @@ export const fetchChatBotResponse = async (
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: messages,
-        max_tokens: 250,
+        max_tokens: 450,
       }),
     });
     if (!response.ok) throw new Error("Failed to fetch AI response");

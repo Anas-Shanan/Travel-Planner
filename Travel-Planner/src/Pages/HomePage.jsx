@@ -3,7 +3,7 @@ import ContinentFilter from "../components/Home/ContinentFilter";
 import SearchBar from "../components/Home/SearchBar";
 import CountryCard from "../components/common/CountryCard";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 
 export default function HomePage() {
   const [countries, setCountries] = useState([]);
@@ -110,7 +110,7 @@ export default function HomePage() {
     >
       <HeroBanner />
       <div style={{ padding: "20px" }}>
-        <h1>Country Explorer</h1>
+        <h2>Country Explorer</h2>
 
         <div style={{ display: "flex", gap: "16px" }}>
           <ContinentFilter value={continent} onChange={setContinent} />
@@ -123,9 +123,13 @@ export default function HomePage() {
           </button>
         </div>
 
-        <p>
-          | 🌍 Continent: <strong>{continent}</strong> | 🔎 Search:{" "}
-          <strong>{search}</strong> |
+        <p className="continent-filter2">
+          | 🌍 Continent: <strong>{continent}</strong>{" "}
+          <span className={search ? "span" : "none"}>|🔎 Search: </span>
+          <strong style={{ color: "#db504a", fontSize: "20px" }}>
+            {search}
+          </strong>{" "}
+          |
         </p>
       </div>
       <h2>Featured Countries</h2>
@@ -154,7 +158,16 @@ export default function HomePage() {
                 />
               ))
             ) : search !== "" && filteredCountries.length === 0 ? (
-              <div>Country not found.</div>
+              <div
+                style={{
+                  minHeight: "200px",
+                  color: "#db504a",
+                  fontWeight: "800",
+                  fontSize: "24px",
+                }}
+              >
+                Country not found.
+              </div>
             ) : (
               // Filtered countries
               filteredCountries.map((country) => (

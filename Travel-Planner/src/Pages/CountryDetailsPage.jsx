@@ -89,8 +89,6 @@ export default function CountryDetailsPage() {
     }
   };
 
-  //////////////
-
   return (
     <div>
       {isLoading && <div>Loading country details...</div>}
@@ -100,7 +98,6 @@ export default function CountryDetailsPage() {
           country={country}
           favorites={favorites}
           dispatch={dispatch}
-          /////////
           travelSuggestions={travelSuggestions}
           onFetchTravelSuggestions={handleFetchTravelSuggestions}
           isAiLoading={isAiLoading}
