@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./CountryCard.css"; // Optional: for card-specific styles
+import "./CountryCard.css";
 
 export default function CountryCard({ name, flag, capital }) {
   return (

@@ -28,15 +28,19 @@ export default function CountryDetailsPage() {
       setIsLoading(true);
       try {
         const countriesData = localStorage.getItem("countries");
-        if (!countriesData) throw new Error("No countries data found");
-        const countriesArray = JSON.parse(countriesData);
-        const foundCountry = countriesArray.find(
+        if (!countriesData) throw new Error("Country data is not available yet.");
+        const countries = JSON.parse(countriesData);
+        if (!Array.isArray(countries)) {
+          throw new Error("Saved country data is invalid. Reload the home page.");
+        }
+
+        const foundCountry = countries.find(
           (c) => c.name?.common?.toLowerCase() === name.toLowerCase()
         );
         if (!foundCountry) throw new Error("Country not found");
         setCountry(foundCountry);
 
-        // welcome message for the country
+        // welcome message for the chat bot
         setChatMessages([
           {
             sender: "ai",

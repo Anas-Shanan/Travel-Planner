@@ -3,52 +3,47 @@ import ContinentFilter from "../components/Home/ContinentFilter";
 import SearchBar from "../components/Home/SearchBar";
 import CountryCard from "../components/common/CountryCard";
 import { useState, useEffect } from "react";
-import { color, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState("");
   const [continent, setContinent] = useState("All");
   const [filteredCountries, setFilteredCountries] = useState([]);
-  const [isLoading, setisLoading] = useState(false);
-  const [_error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isCancelled = false;
+
     async function fetchCountries() {
-      setisLoading(true);
       try {
-        const cachedCountries = localStorage.getItem("countries");
-
-        if (cachedCountries) {
-          const parsedCountries = JSON.parse(cachedCountries);
-          console.log("Using cached countries data");
-          setCountries(parsedCountries);
-          setisLoading(false);
-
-          return;
-        }
-
-        console.log("Fetching countries from API");
         const response = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags,latlng"
+          "https://restcountries.conventus.de/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags,latlng"
         );
         if (!response.ok) {
-          throw new Error("error fetching the data");
+          throw new Error(`Country request failed (${response.status}).`);
         }
+
         const data = await response.json();
+        if (!Array.isArray(data) || data.some((country) => !country.name?.common)) {
+          throw new Error("The country API returned invalid data.");
+        }
 
         localStorage.setItem("countries", JSON.stringify(data));
-        console.log("Countries data cached in localStorage");
-
-        setCountries(data);
-        setisLoading(false);
+        if (!isCancelled) setCountries(data);
       } catch (error) {
-        setError(error.message);
-        setisLoading(false);
-        console.error(error);
+        console.error("Failed to fetch countries:", error);
+        if (!isCancelled) setError(error.message);
+      } finally {
+        if (!isCancelled) setIsLoading(false);
       }
     }
+
     fetchCountries();
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -135,7 +130,9 @@ export default function HomePage() {
       <h2>Featured Countries</h2>
 
       <div className="country-grid">
-        {!isLoading && (
+        {isLoading && <p>Loading countries...</p>}
+        {error && <p role="alert">Could not load countries: {error}</p>}
+        {!isLoading && countries.length > 0 && (
           <>
             {search === "" && continent === "All" ? (
               // Featured countries
